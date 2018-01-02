@@ -1,0 +1,25 @@
+{
+  "name": "reason-react-reconciler",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "bsb -make-world",
+    "start": "bsb -make-world -w",
+    "clean": "bsb -clean-world"
+  },
+  "keywords": [
+    "BuckleScript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "bs-platform": "^2.1.0",
+    "reasonably-typed": "^0.13.0",
+    "rollup": "^0.53.2",
+    "rollup-plugin-closure-compiler-js": "^1.0.6"
+  },
+  "dependencies": {
+    "bs-webapi": "^0.7.0",
+    "react": "^16.2.0",
+    "react-reconciler": "^0.7.0"
+  }
+}

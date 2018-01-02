@@ -1,0 +1,17 @@
+{
+  "name": "reason-react-reconciler",
+  "version": "0.1.0",
+  "sources": [
+    "src"
+  ],
+  "package-specs": {
+    "module": "es6",
+    "in-source": true
+  },
+  "suffix": ".bs.js",
+  "bs-dependencies": [
+      "bs-webapi"
+  ],
+  "namespace": true,
+  "refmt": 3
+}
