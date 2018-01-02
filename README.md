@@ -1,6 +1,6 @@
-# Basic Reason Template
+# Reason ReactDOM
 
-Hello! This project allows you to quickly get started with Reason and BuckleScript. If you wanted a more sophisticated version, try the `react` template (`bsb -theme react -init .`).
+This is a basic implementation of a DOM renderer for React. It takes the place of `react-dom` and uses the `react-reconciler` package. It is implemented in Reason and compiled with BuckleScript.
 
 # Build
 ```
