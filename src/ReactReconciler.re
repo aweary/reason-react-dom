@@ -27,5 +27,6 @@ type reconciler('c /*, 'i, 'ti */) = {
 };
 
 type t = reconciler(Element.t);
+type createReconciler = [@bs] HostConfig.t => t;
 
-[@bs.module "react-reconciler"] external create : HostConfig.t => t = "default";
+[@bs.module "./ReactReconcilerEntry.js"] external create : HostConfig.t => t = "createRenderer";

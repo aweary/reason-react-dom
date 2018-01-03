@@ -1,10 +1,12 @@
 {
-  "name": "reason-react-reconciler",
+  "name": "reason-react-dom",
   "version": "0.1.0",
+  "main": "./src/index.bs.js",
   "scripts": {
     "build": "bsb -make-world",
     "start": "bsb -make-world -w",
-    "clean": "bsb -clean-world"
+    "clean": "bsb -clean-world",
+    "bundle": "rollup -c"
   },
   "keywords": [
     "BuckleScript"
@@ -15,7 +17,9 @@
     "bs-platform": "^2.1.0",
     "reasonably-typed": "^0.13.0",
     "rollup": "^0.53.2",
-    "rollup-plugin-closure-compiler-js": "^1.0.6"
+    "rollup-plugin-closure-compiler-js": "^1.0.6",
+    "rollup-plugin-commonjs": "^8.2.6",
+    "rollup-plugin-node-resolve": "^3.0.0"
   },
   "dependencies": {
     "bs-webapi": "^0.7.0",
