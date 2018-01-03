@@ -45,7 +45,6 @@ type instance =
   | Element
   | Text;
 type hostContext = string;
-/* TODO: we don't need the abstract type `t` once this is well-defined */
 type t =
   abstractT(
      /* T: Component Type */
