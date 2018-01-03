@@ -1,7 +1,7 @@
 {
   "name": "reason-react-dom",
   "version": "0.1.0",
-  "main": "./src/index.bs.js",
+  "main": "./bundle.js",
   "scripts": {
     "build": "bsb -make-world",
     "start": "bsb -make-world -w",
@@ -23,6 +23,8 @@
   },
   "dependencies": {
     "bs-webapi": "^0.7.0",
+    "lodash.isnumber": "^3.0.3",
+    "lodash.isstring": "^4.0.1",
     "react": "^16.2.0",
     "react-reconciler": "^0.7.0"
   }

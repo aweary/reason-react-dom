@@ -10,7 +10,7 @@ type reconciler('c /*, 'i, 'ti */) = {
   .
   "createContainer": [@bs] ('c, Js.boolean, Js.boolean) => ReactFiber.root,
   "updateContainer":
-    (ReactFiber.nodeList, ReactFiber.root, ReactFiber.t, callback) => expirationTime,
+    [@bs] (ReactFiber.nodeList, ReactFiber.root, Js.Nullable.t(ReactFiber.t), callback) => expirationTime,
   "updateContainerAtExpirationTime":
     (ReactFiber.nodeList, ReactFiber.root, ReactFiber.t, expirationTime, callback) =>
     expirationTime,

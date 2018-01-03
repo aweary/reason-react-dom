@@ -2,6 +2,12 @@ open Webapi.Dom;
 
 type deadline = {. "timeRemaining": unit => int};
 type deferredCallbackOptions = {. "timeout": int};
+type scheduler = (deadline => unit, option(deferredCallbackOptions)) => float;
+type schedulerCancel = float => unit;
+
+[@bs.scope "window"] [@bs.val] external requestIdleCallback : scheduler = "";
+[@bs.scope "window"] [@bs.val] external cancelIdleCallback : schedulerCancel = "";
+
 /* Right now all of these types are parametized, since that's how
    it's defined in ReactFiberReconciler. These will be filled in with concrete
    types as the implementation is developed */
@@ -19,15 +25,15 @@ type abstractT('t, 'p, 'i, 'ti, 'hi, 'pi, 'c, 'cc, 'cx, 'pl) = {
   "shouldSetTextContent": ('t, 'p) => Js.boolean,
   "shouldDeprioritizeSubtree": ('t, 'p) => Js.boolean,
   "createTextInstance": (string, 'c, 'cx, ReactFiber.t) => 'ti,
-  "scheduleDeferredCallback": (deadline => unit, option(deferredCallbackOptions)) => float,
-  "cancelDeferredCallback": float => unit,
+  "scheduleDeferredCallback": scheduler,
+  "cancelDeferredCallback": schedulerCancel,
   "prepareForCommit": unit => unit,
   "resetAfterCommit": unit => unit,
   "now": unit => float,
-  "mutation": MutableUpdatesHostConfig.abstractT('t, 'p, 'i, 'ti, 'c, 'pl)
+  "mutation": MutableUpdatesHostConfig.abstractT('t, 'p, 'i, 'ti, 'c, 'pl),
+  "useSyncScheduling": Js.boolean
   /*
    Add these later if need be:
-   "useSyncScheduling": any,
    "hydration": any,
    "persistence": any
    */
@@ -67,34 +73,42 @@ type t =
 /* We don't utilize host context at all right now, so 
    just return an empty string */
 let getRootHostContext = (_context) => {
+  Js.log("getRootHostContext");
   ""
 };
 
 let getChildHostContext = (_type, _props, _container) => {
+  Js.log("getChildHostContext");
   ""
 };
 
 let getPublicInstance = (instance) => {
+  Js.log("getPublicInstance");
   instance
 };
 
 let createInstance = (t, _props, _container, _context, _fiber) => {
+  Js.log("createInstance");
   document |> Document.createElement(t)
 };
 
 let appendInitialChild = (parent: Element.t, child: Element.t) => {
+  Js.log("appendInitialChild");
   parent |> Element.appendChild(child)
 };
 
 let finalizeInitialChildren = (_element, _type, _props, _inst) => {
+  Js.log("finalizeInitialChildren");
   Js.false_
 };
 
 let prepareUpdate = (_inst, _type, _oldProps, _newProps, _conatiner, _context) => {
+  Js.log("Preparing update...");
   Js.Nullable.from_opt(Some([||]))
 };
 
-let shouldSetTextContent = (_elementType, _props) => {
+let shouldSetTextContent = (elementType, props) => {
+  /* TODO THIS ! */
   Js.false_
 };
 let shouldDeprioritizeSubtree = (_type, _props) => {
@@ -105,18 +119,8 @@ let createTextInstance = (text, _instance, _context, _fiber) => {
   document |> Document.createTextNode(text)
 };
 
-let scheduleDeferredCallback = (_callback, _options) => {
-  Js.Date.now()
-};
-
-let cancelDeferredCallback = (_id) => {
-  ()
-};
-
 let prepareForCommit = () => ();
 let resetAfterCommit = () => ();
-
-
 
 let config : t = {
   "getRootHostContext": getRootHostContext,
@@ -129,10 +133,11 @@ let config : t = {
   "shouldSetTextContent": shouldSetTextContent,
   "shouldDeprioritizeSubtree": shouldDeprioritizeSubtree,
   "createTextInstance": createTextInstance,
-  "scheduleDeferredCallback": scheduleDeferredCallback,
-  "cancelDeferredCallback": cancelDeferredCallback,
+  "scheduleDeferredCallback": requestIdleCallback,
+  "cancelDeferredCallback": cancelIdleCallback,
   "prepareForCommit": prepareForCommit,
   "resetAfterCommit": resetAfterCommit,
   "now": Js.Date.now,
-  "mutation": MutableUpdatesHostConfig.make()
+  "mutation": MutableUpdatesHostConfig.make(),
+  "useSyncScheduling": Js.true_
 };

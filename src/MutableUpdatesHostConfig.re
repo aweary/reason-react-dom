@@ -27,30 +27,37 @@ type t = abstractT(
 
 
 let commitUpdate = (_instance, _updatePayload, _type, _oldProps, _newProps, _fiber) => {
+  Js.log("commitUpdate");
  ()
 };
 
 let commitMount = (_instance, _type, _newProps, _fiber) => {
+  Js.log("commitMount");
   ()
 };
 
 let commitTextUpdate = (textInstance, _oldText, newText) => {
+  Js.log("commitTextUpdate");
   Text.setNodeValue(textInstance, Js.Null.return(newText))
 };
 
 let resetTextContent = (element) => {
+  Js.log("resetTextContent");
   Element.setTextContent(element, "")
 };
 
 let appendChild = (parent, child) => {
+  Js.log("appendChild");
   Element.appendChild(child, parent)
 };
 
 let appendChildToContainer = (container, child) => {
-  Element.appendChild(container, child)
+  Js.log("appendChildToContainer");
+  Element.appendChild(child, container)
 };
 
 let insertBefore = (parentInstance, child, beforeChild) => {
+  Js.log("insertBefore");
   ignore(Element.insertBefore(child, beforeChild, parentInstance));
 };
 
