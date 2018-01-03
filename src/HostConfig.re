@@ -29,7 +29,6 @@ type abstractT('t, 'p, 'i, 'ti, 'hi, 'pi, 'c, 'cc, 'cx, 'pl) = {
    Add these later if need be:
    "useSyncScheduling": any,
    "hydration": any,
-   "mutation": any,
    "persistence": any
    */
 };
