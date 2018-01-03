@@ -4,14 +4,18 @@ type t;
 
 
 let renderer = ReactReconciler.create(HostConfig.config);
+let containerMap : WeakMap.t(Element.t, ReactFiber.root) = WeakMap.make();
 
 let render = (element, container: Element.t) => {
   let createContainer = renderer##createContainer;
   let updateContainer = renderer##updateContainer;
-  let root = if (ContainerWeakMap.has(container)) {
-    ContainerWeakMap.get(container)
+  let root = if (container |> WeakMap.has(containerMap) |> Js.to_bool) {
+    WeakMap.get(containerMap, container)
   } else {
-    [@bs] createContainer(container, Js.false_, Js.false_)
+    let newRoot = [@bs] createContainer(container, Js.false_, Js.false_);
+    WeakMap.set(containerMap, container, newRoot);
+    newRoot
   };
+  Js.log(root)
   /* TODO call updateContainer with element */
 };
