@@ -66,7 +66,7 @@ let removeChild = (parentInstance, child) => {
   ignore(Element.removeChild(child, parentInstance));
 };
 
-let make : unit => t = () => {
+let config : t = {
   "commitUpdate": commitUpdate,
   "commitMount": commitMount,
   "commitTextUpdate": commitTextUpdate,

@@ -150,20 +150,18 @@ function removeChild(parentInstance, child) {
   return /* () */0;
 }
 
-function make() {
-  return {
-          commitUpdate: commitUpdate,
-          commitMount: commitMount,
-          commitTextUpdate: commitTextUpdate,
-          resetTextContent: resetTextContent,
-          appendChild: appendChild,
-          appendChildToContainer: appendChildToContainer,
-          insertBefore: insertBefore,
-          insertInContainerBefore: insertBefore,
-          removeChild: removeChild,
-          removeChildFromContainer: removeChild
-        };
-}
+var config$1 = {
+  commitUpdate: commitUpdate,
+  commitMount: commitMount,
+  commitTextUpdate: commitTextUpdate,
+  resetTextContent: resetTextContent,
+  appendChild: appendChild,
+  appendChildToContainer: appendChildToContainer,
+  insertBefore: insertBefore,
+  insertInContainerBefore: insertBefore,
+  removeChild: removeChild,
+  removeChildFromContainer: removeChild
+};
 
 
 /* No side effect */
@@ -252,7 +250,7 @@ var config = {
   now: (function () {
       return Date.now();
     }),
-  mutation: make(/* () */0),
+  mutation: config$1,
   useSyncScheduling: true
 };
 
@@ -284,6 +282,4 @@ function render(element, container) {
 
 /* renderer Not a pure module */
 
-exports.renderer = renderer;
-exports.containerMap = containerMap;
 exports.render = render;

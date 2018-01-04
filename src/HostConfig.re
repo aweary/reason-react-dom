@@ -145,6 +145,6 @@ let config : t = {
   "prepareForCommit": prepareForCommit,
   "resetAfterCommit": resetAfterCommit,
   "now": Js.Date.now,
-  "mutation": MutableUpdatesHostConfig.make(),
+  "mutation": MutableUpdatesHostConfig.config,
   "useSyncScheduling": Js.true_
 };
