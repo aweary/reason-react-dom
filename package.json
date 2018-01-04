@@ -15,6 +15,7 @@
   "license": "MIT",
   "devDependencies": {
     "bs-platform": "^2.1.0",
+    "jest": "^22.0.4",
     "reasonably-typed": "^0.13.0",
     "rollup": "^0.53.2",
     "rollup-plugin-closure-compiler-js": "^1.0.6",
@@ -23,6 +24,7 @@
   },
   "dependencies": {
     "bs-webapi": "^0.7.0",
+    "lodash-es": "^4.17.4",
     "lodash.isnumber": "^3.0.3",
     "lodash.isstring": "^4.0.1",
     "react": "^16.2.0",

@@ -77,7 +77,7 @@ let getRootHostContext = (_context) => {
 };
 
 let getChildHostContext = (_type, _props, _container) => {
-  Js.log("getChildHostContext");
+  Js.log("getChildHostContext??");
   ""
 };
 
@@ -86,9 +86,11 @@ let getPublicInstance = (instance) => {
   instance
 };
 
-let createInstance = (t, _props, _container, _context, _fiber) => {
+let createInstance = (t, props, _rootContainerInstance, _hostContext, _internalInstanceHandle) => {
   Js.log("createInstance");
-  document |> Document.createElement(t)
+  let element = document |> Document.createElement(t);
+  /* @TODO cache element */
+  element
 };
 
 let appendInitialChild = (parent: Element.t, child: Element.t) => {
@@ -96,8 +98,10 @@ let appendInitialChild = (parent: Element.t, child: Element.t) => {
   parent |> Element.appendChild(child)
 };
 
-let finalizeInitialChildren = (_element, _type, _props, _inst) => {
+let finalizeInitialChildren = (domElement, t, props, rootContainerInstance) => {
   Js.log("finalizeInitialChildren");
+  Dom.setInitialProperties(domElement, props) |> ignore;
+  /* @TODO do we need to implement the same autofocus behavior as react-dom? */
   Js.false_
 };
 
@@ -106,10 +110,14 @@ let prepareUpdate = (_inst, _type, _oldProps, _newProps, _conatiner, _context) =
   Js.Nullable.from_opt(Some([||]))
 };
 
-let shouldSetTextContent = (elementType, props) => {
-  /* TODO THIS ! */
-  Js.false_
+let shouldSetTextContent = (_elementType, props: ReactFiber.props) => {
+  switch (Util.typeof(props##children)) {
+  | "number" => Js.true_
+  | "string" => Js.false_
+  | _ => Js.false_
+  }
 };
+
 let shouldDeprioritizeSubtree = (_type, _props) => {
   Js.false_
 };
