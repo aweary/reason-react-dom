@@ -28,7 +28,12 @@ let setUnreservedProperty = (element, props, key) =>
     ReactFiber.getValueFromProps(props, key)
   );
 
-let setInitialProperties = (element, props) =>
+let setCSSStyle = (element, style) => {
+  /* setPropertyOnElement(element, "style", style); */
+  CSS.setStyle(element, style);
+};
+
+let setInitialProperties = (element, props: ReactFiber.props) =>
   Js.Obj.keys(props)
   |> Js.Array.forEach(
        (key) =>
@@ -36,7 +41,7 @@ let setInitialProperties = (element, props) =>
          /* Children may be strings or numbers */
          | "children" => setChildren(element, props##children)
          /* The CSS module handles setting the style value */
-         | "style" => Js.log("TODO we dont handle styles yet")
+         | "style" => setCSSStyle(element, props##style)
          | "dangerouslySetInnerHTML" =>
            setDangerousInnerHTML(element, props##dangerouslySetInnerHTML)
          | _ => setUnreservedProperty(element, props, key)

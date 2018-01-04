@@ -1,3 +1,5 @@
+open Webapi.Dom;
+
 type t;
 
 /**
@@ -37,13 +39,19 @@ type dangerousInnerHTML = {
   .
   "__html": string
 };
+
+type style = {.};
+
 type props = {.
   /* This is poorly typed since it could be a string or number */
   "children": string,
-  "dangerouslySetInnerHTML": dangerousInnerHTML
+  "dangerouslySetInnerHTML": dangerousInnerHTML,
+  "style": style
 };
 type update;
 type root;
 type nodeList;
 
 [@bs.get_index] external getValueFromProps : (props, string) => 'a = "";
+[@bs.get_index] external getValueFromStyle : (style, string) => string = "";
+external styleAsObj : style => Js.t('a) = "%identity";
