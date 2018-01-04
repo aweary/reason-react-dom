@@ -86,7 +86,7 @@ let getPublicInstance = (instance) => {
   instance
 };
 
-let createInstance = (t, props, _rootContainerInstance, _hostContext, _internalInstanceHandle) => {
+let createInstance = (t, _props, _rootContainerInstance, _hostContext, _internalInstanceHandle) => {
   Js.log("createInstance");
   let element = document |> Document.createElement(t);
   /* @TODO cache element */
@@ -98,7 +98,7 @@ let appendInitialChild = (parent: Element.t, child: Element.t) => {
   parent |> Element.appendChild(child)
 };
 
-let finalizeInitialChildren = (domElement, t, props, rootContainerInstance) => {
+let finalizeInitialChildren = (domElement, _t, props, _rootContainerInstance) => {
   Js.log("finalizeInitialChildren");
   Dom.setInitialProperties(domElement, props) |> ignore;
   /* @TODO do we need to implement the same autofocus behavior as react-dom? */
