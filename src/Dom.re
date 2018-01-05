@@ -1,21 +1,18 @@
-open Webapi.Dom;
+open Webapi;
 
-[@bs.set_index] external setPropertyOnElement : (Element.t, string, 'a) => unit = "";
+/* Lets us set an arbitrary property on an Element. We need this since we don't maintain
+   a list of all possible properties (which we couldn't anyways if we allow arbitary attributes) */
+[@bs.set_index] external setPropertyOnElement : (Dom.Element.t, string, 'a) => unit = "";
 
+/* Returns true if the `key` starts with "on", which we assume means it's an event listener. We
+   Do not validate whether the event is actually valid or not. Js.String.slice requires that we provide a ~to_
+   value, so we just pass 50 assuming that no event name will be longer than that */
+let isEventListener = (propKey) =>
+  "on" == (propKey |> Js.String.slice(~from=2, ~to_=50) |> Js.String.toLowerCase);
 
-let isEventName = (key) => {
-  let a = Js.String.get(key, 0);
-  let b = Js.String.get(key, 1);
-  if ((a == "o" || a == "O") && (b == "n" || b == "N")) {
-    true
-  } else {
-    false
-  }
-};
-
-let addEventListener = (element, eventName, listener) => {
-  Element.addEventListener(eventName, listener, element);
-};
+/* Returns the event type which we can pass to addEventListener to listen to the event */
+let getEventType = (propKey) =>
+  propKey |> Js.String.slice(~from=2, ~to_=50) |> Js.String.toLowerCase;
 
 let setChildren = (element, child) =>
   switch (Util.typeof(child)) {
@@ -24,38 +21,23 @@ let setChildren = (element, child) =>
     /* Since `child` can be a number at runtime, but the type system
        thinks its always a stirng, we just always concatenate it with an empty
        string so that the runtime value will definitely be a string */
-    Element.setTextContent(
-      element,
-      "" ++ child
-    )
+    Dom.Element.setTextContent(element, "" ++ child)
   /* @TODO this should probably throw if we're seeing non-primitive children here? */
   | _ => ignore()
   };
 
 let setDangerousInnerHTML = (element, innerHTML: ReactFiber.dangerousInnerHTML) =>
-  Element.setInnerHTML(element, innerHTML##__html);
+  Dom.Element.setInnerHTML(element, innerHTML##__html);
 
-let setUnreservedProperty = (element, props, key) => {
+let setUnreservedProperty = (element, props, key) =>
   /* let value = ReactFiber.getValueFromProps(props, key); */
-  if (isEventName(key)) {
-    let eventName = key
-      |> Js.String.slice(~from=2, ~to_=(Js.String.length(key)))
-      |> Js.String.toLowerCase;
+  if (isEventListener(key)) {
+    let eventType = getEventType(key);
     let listener = ReactFiber.getValueFromProps(props, key);
-    addEventListener(element, eventName, listener) |> ignore;
+    Dom.Element.addEventListener(eventType, listener, element) |> ignore
   } else {
-  setPropertyOnElement(
-    element,
-    key,
-    ReactFiber.getValueFromProps(props, key)
-  );
+    setPropertyOnElement(element, key, ReactFiber.getValueFromProps(props, key))
   };
-};
-
-let setCSSStyle = (element, style) => {
-  /* setPropertyOnElement(element, "style", style); */
-  CSS.setStyle(element, style);
-};
 
 let setInitialProperties = (element, props: ReactFiber.props) =>
   Js.Obj.keys(props)
